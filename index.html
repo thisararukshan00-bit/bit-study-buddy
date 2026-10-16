@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIT Study Buddy — Simulated Study Planning Assistant</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">◐</span>
+      <span class="brand-name">BIT Study Buddy</span>
+    </div>
+    <p class="brand-tag">A simulated study-planning assistant for university students</p>
+  </header>
+
+  <main id="main-content" class="app-main">
+
+    <!-- Welcome / disclosure banner -->
+    <section class="welcome-card" id="welcomeCard" aria-labelledby="welcomeHeading">
+      <h1 id="welcomeHeading">Plan your week in one message</h1>
+      <p>
+        Tell me how much study time you have, which subjects you're juggling, and any deadlines.
+        I'll turn that into a weekly study plan you can edit, complete, and track.
+      </p>
+      <p class="disclosure">
+        <strong>Note:</strong> This is an independent student project built for a hackathon.
+        It is a <strong>simulated</strong> assistant — all planning happens with simple local
+        rules inside your browser. It is <em>not</em> connected to Alexa+, Amazon, or any
+        Amazon device or service, and no real AI model runs behind it.
+      </p>
+    </section>
+
+    <!-- Chat-style input -->
+    <section class="chat-card" aria-labelledby="chatHeading">
+      <h2 id="chatHeading">Describe your week</h2>
+
+      <div class="chat-log" id="chatLog" role="log" aria-live="polite" aria-label="Conversation with the study planner"></div>
+
+      <form id="chatForm" class="chat-form">
+        <label for="chatInput" class="visually-hidden">Describe your available study time, subjects, and deadlines</label>
+        <textarea
+          id="chatInput"
+          class="chat-input"
+          placeholder="e.g. I have 6 hours this week. Subjects: Math (exam Friday, high priority), Web Programming, Technical Writing."
+          rows="3"
+        ></textarea>
+        <div class="chat-actions">
+          <button type="submit" class="btn btn-primary" id="sendBtn">
+            <span aria-hidden="true">➤</span> Build my plan
+          </button>
+        </div>
+      </form>
+
+      <div class="example-prompts" aria-label="Example prompts you can try">
+        <span class="example-label">Try an example:</span>
+        <button type="button" class="chip" data-example="1">6 hrs/week · Math, Web Programming</button>
+        <button type="button" class="chip" data-example="2">10 hrs/week · 3 subjects, exam Friday</button>
+        <button type="button" class="chip" data-example="3">Light week · 2 hrs · one subject</button>
+      </div>
+    </section>
+
+    <!-- Weekly plan -->
+    <section class="plan-card" aria-labelledby="planHeading">
+      <div class="plan-header">
+        <h2 id="planHeading">Your weekly plan</h2>
+        <button type="button" class="btn btn-ghost btn-small" id="resetBtn">Reset demo data</button>
+      </div>
+
+      <div id="planEmptyState" class="empty-state">
+        <span class="empty-icon" aria-hidden="true">✎</span>
+        <p>No plan yet. Describe your week above, or tap an example, to generate your first study plan.</p>
+      </div>
+
+      <ul id="planList" class="plan-list" aria-live="polite"></ul>
+    </section>
+
+    <!-- Add task manually -->
+    <section class="add-task-card" aria-labelledby="addTaskHeading">
+      <h2 id="addTaskHeading">Add a study session manually</h2>
+      <form id="taskForm" class="task-form">
+        <div class="field">
+          <label for="taskSubject">Subject</label>
+          <input type="text" id="taskSubject" name="subject" required maxlength="40" placeholder="e.g. Database Systems">
+        </div>
+        <div class="field">
+          <label for="taskDay">Day</label>
+          <select id="taskDay" name="day" required>
+            <option value="Mon">Monday</option>
+            <option value="Tue">Tuesday</option>
+            <option value="Wed">Wednesday</option>
+            <option value="Thu">Thursday</option>
+            <option value="Fri">Friday</option>
+            <option value="Sat">Saturday</option>
+            <option value="Sun">Sunday</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="taskDuration">Duration (minutes)</label>
+          <input type="number" id="taskDuration" name="duration" required min="15" max="480" step="15" value="60">
+        </div>
+        <div class="field">
+          <label for="taskPriority">Priority</label>
+          <select id="taskPriority" name="priority" required>
+            <option value="high">High</option>
+            <option value="medium" selected>Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-secondary">Add session</button>
+      </form>
+      <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>Built as a free, open-source student project. Runs entirely in your browser — no account, no server, no cost.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,410 @@
+/* BIT Study Buddy — warm, calm, student-friendly theme.
+   No remote fonts or images: everything here is CSS/text only. */
+
+:root {
+  --bg: #fbf6ef;
+  --surface: #ffffff;
+  --surface-soft: #fff8ee;
+  --ink: #2f2a26;
+  --ink-soft: #6b6058;
+  --border: #ead9c3;
+  --accent: #d97a3f;
+  --accent-dark: #b55f2a;
+  --accent-soft: #fbe3cf;
+  --success: #3f8a5c;
+  --success-soft: #e3f3e8;
+  --danger: #c84f4f;
+  --danger-soft: #fbe6e6;
+  --high: #c84f4f;
+  --medium: #d9a53f;
+  --low: #3f8a5c;
+  --radius: 14px;
+  --focus: #1a73e8;
+  --shadow: 0 2px 10px rgba(80, 60, 30, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #201c18;
+    --surface: #2a2521;
+    --surface-soft: #302a24;
+    --ink: #f3ece2;
+    --ink-soft: #c2b6a6;
+    --border: #45392c;
+    --accent: #e8914f;
+    --accent-dark: #f2a86b;
+    --accent-soft: #3a2d1e;
+    --success: #6fbf8b;
+    --success-soft: #1f3327;
+    --danger: #e08080;
+    --danger-soft: #3a2323;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #201c18;
+  --surface: #2a2521;
+  --surface-soft: #302a24;
+  --ink: #f3ece2;
+  --ink-soft: #c2b6a6;
+  --border: #45392c;
+  --accent: #e8914f;
+  --accent-dark: #f2a86b;
+  --accent-soft: #3a2d1e;
+  --success: #6fbf8b;
+  --success-soft: #1f3327;
+  --danger: #e08080;
+  --danger-soft: #3a2323;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  z-index: 10;
+}
+.skip-link:focus {
+  left: 16px;
+  top: 16px;
+}
+
+a, button, input, select, textarea {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+/* Header */
+.app-header {
+  padding: 28px 20px 18px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--accent-soft), transparent);
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.brand-icon {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 1.1rem;
+}
+.brand-tag {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+/* Main layout */
+.app-main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+h1 { font-size: 1.3rem; margin: 0 0 8px; }
+h2 { font-size: 1.1rem; margin: 0 0 12px; }
+
+.welcome-card p { margin: 0 0 10px; color: var(--ink-soft); }
+.disclosure {
+  background: var(--surface-soft);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.88rem;
+  color: var(--ink);
+}
+
+/* Chat */
+.chat-log {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.chat-log:empty { display: none; }
+
+.msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+}
+.msg-user {
+  align-self: flex-end;
+  background: var(--accent);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.msg-assistant {
+  align-self: flex-start;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 4px;
+}
+.msg-assistant .msg-steps {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.chat-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.chat-input {
+  width: 100%;
+  resize: vertical;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+.chat-actions { display: flex; justify-content: flex-end; }
+
+.example-prompts {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.example-label {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-right: 4px;
+}
+.chip {
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+.chip:hover { background: var(--accent-soft); }
+
+/* Buttons */
+.btn {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--accent-dark); }
+.btn-secondary {
+  background: var(--ink);
+  color: var(--bg);
+}
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--ink-soft);
+}
+.btn-ghost:hover { background: var(--surface-soft); }
+.btn-small { padding: 6px 12px; font-size: 0.82rem; }
+
+/* Plan list */
+.plan-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.plan-header h2 { margin: 0; }
+
+.empty-state {
+  text-align: center;
+  padding: 28px 12px;
+  color: var(--ink-soft);
+}
+.empty-icon {
+  display: block;
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+}
+
+.plan-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.plan-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-soft);
+}
+.plan-item.is-complete {
+  opacity: 0.6;
+}
+.plan-item.is-complete .plan-item-subject {
+  text-decoration: line-through;
+}
+
+.plan-item-day {
+  min-width: 46px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  border-right: 1px solid var(--border);
+  padding-right: 10px;
+}
+
+.plan-item-body { flex: 1; min-width: 0; }
+.plan-item-subject { font-weight: 600; }
+.plan-item-meta {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.priority-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.priority-dot::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--medium);
+}
+.priority-high::before { background: var(--high); }
+.priority-medium::before { background: var(--medium); }
+.priority-low::before { background: var(--low); }
+
+.plan-item-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+.icon-btn:hover { background: var(--accent-soft); }
+.icon-btn[aria-pressed="true"] {
+  background: var(--success-soft);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+/* Add task form */
+.task-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.task-form .field { display: flex; flex-direction: column; gap: 4px; }
+.task-form label { font-size: 0.82rem; color: var(--ink-soft); }
+.task-form input, .task-form select {
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--ink);
+}
+.task-form .btn { grid-column: 1 / -1; }
+
+.form-status {
+  min-height: 1.2em;
+  font-size: 0.85rem;
+  color: var(--success);
+  margin: 10px 0 0;
+}
+.form-status.is-error { color: var(--danger); }
+
+.app-footer {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  padding: 10px 16px 30px;
+}
+
+/* Responsive */
+@media (max-width: 520px) {
+  .task-form { grid-template-columns: 1fr; }
+  .brand { font-size: 1.25rem; }
+  section { padding: 16px; }
+}
