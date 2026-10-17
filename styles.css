@@ -5,6 +5,7 @@
    blur. System fonts only — no remote fonts or images. */
 
 :root {
+  color-scheme: light;
   --paper: #eef1f4;
   --paper-line: #d3dbe4;
   --sheet: #ffffff;
@@ -32,48 +33,42 @@
   --font-data: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #131a2b;
-    --paper-line: #232d45;
-    --sheet: #1b2236;
-    --ink: #e9ecf4;
-    --ink-soft: #aab3c9;
-    --ink-faint: #76809a;
-    --rule: #30395430;
-    --teal: #5fb3a8;
-    --teal-dark: #8fd0c6;
-    --teal-wash: #1b3330;
-    --rust: #e08a66;
-    --rust-wash: #3a271e;
-    --ochre: #d8b24e;
-    --ochre-wash: #3a3018;
-    --forest: #7fbf97;
-    --forest-wash: #1e3327;
-    --hard-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45);
-    --hard-shadow-sm: 2px 2px 0 rgba(0, 0, 0, 0.4);
-  }
-}
+/* A second, optional "study-lab" dark theme — picked by hand with the
+   toggle button, never by the visitor's OS setting, so a demo recording
+   never shifts on its own. A restrained cyan-glow accent stands in for
+   "lab monitor" light; glow is used sparingly (buttons, active borders),
+   not smeared across the whole page. */
 :root[data-theme="dark"] {
-  --paper: #131a2b;
-  --paper-line: #232d45;
-  --sheet: #1b2236;
+  color-scheme: dark;
+  --paper: #0b0f1a;
+  --paper-line: #141b2c;
+  --sheet: #121829;
   --ink: #e9ecf4;
-  --ink-soft: #aab3c9;
-  --ink-faint: #76809a;
-  --rule: #30395430;
-  --teal: #5fb3a8;
-  --teal-dark: #8fd0c6;
-  --teal-wash: #1b3330;
-  --rust: #e08a66;
-  --rust-wash: #3a271e;
-  --ochre: #d8b24e;
-  --ochre-wash: #3a3018;
-  --forest: #7fbf97;
-  --forest-wash: #1e3327;
-  --hard-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45);
-  --hard-shadow-sm: 2px 2px 0 rgba(0, 0, 0, 0.4);
+  --ink-soft: #99a3bd;
+  --ink-faint: #5f6a87;
+  --rule: #232c42;
+  --teal: #35d6c4;
+  --teal-dark: #1f8f82;
+  --teal-wash: #0f2622;
+  --rust: #ff9d5c;
+  --rust-wash: #2a1c10;
+  --ochre: #ffd166;
+  --ochre-wash: #2a2210;
+  --forest: #6be3a0;
+  --forest-wash: #10281c;
+  --danger: #ff9d5c;
+  --hard-shadow: 3px 3px 0 rgba(0, 0, 0, 0.6), 0 0 14px rgba(53, 214, 196, 0.06);
+  --hard-shadow-sm: 2px 2px 0 rgba(0, 0, 0, 0.55);
+  --glow: 0 0 0 1px rgba(53, 214, 196, 0.3), 0 0 10px rgba(53, 214, 196, 0.25);
 }
+:root[data-theme="dark"] .btn-primary,
+:root[data-theme="dark"] .btn-secondary { box-shadow: var(--hard-shadow-sm), var(--glow); }
+:root[data-theme="dark"] .msg-user { box-shadow: var(--glow); }
+:root[data-theme="dark"] .plan-item { box-shadow: var(--hard-shadow-sm), 0 0 8px rgba(0,0,0,0.3); }
+
+/* Otherwise this page uses the light "planner sheet" theme below, and
+   never follows the visitor's OS/browser dark-mode setting on its own —
+   a hackathon demo should look the same on every screen it's recorded on. */
 
 * { box-sizing: border-box; }
 

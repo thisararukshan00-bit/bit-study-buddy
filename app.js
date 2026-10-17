@@ -390,6 +390,43 @@
     showFormStatus("Demo data cleared.", false);
   });
 
+  // ---------- Theme toggle (manual only — never follows OS dark mode) ----------
+  const themeToggle = document.getElementById("themeToggle");
+  const THEME_KEY = "bitStudyBuddy.theme";
+
+  function applyTheme(theme) {
+    if (theme === "light") {
+      document.documentElement.setAttribute("data-theme", "light");
+      themeToggle.textContent = "Dark lab";
+      themeToggle.setAttribute("aria-pressed", "false");
+    } else {
+      // "dark" is the default theme, set directly in CSS :root — no
+      // attribute needed, which also avoids a light-theme flash on load.
+      document.documentElement.removeAttribute("data-theme");
+      themeToggle.textContent = "Light";
+      themeToggle.setAttribute("aria-pressed", "true");
+    }
+  }
+
+  let savedTheme = null;
+  try {
+    savedTheme = localStorage.getItem(THEME_KEY);
+  } catch (err) {
+    // ignore — browser storage may be unavailable; default to dark
+  }
+  // Dark "study-lab" is the default look; the toggle switches to light.
+  applyTheme(savedTheme === "light" ? "light" : "dark");
+
+  themeToggle.addEventListener("click", () => {
+    const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+    applyTheme(next);
+    try {
+      localStorage.setItem(THEME_KEY, next);
+    } catch (err) {
+      // ignore — per-viewer convenience only
+    }
+  });
+
   // ---------- First paint ----------
   renderPlan();
 })();
