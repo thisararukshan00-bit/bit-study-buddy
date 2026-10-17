@@ -11,27 +11,52 @@
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <header class="app-header">
-    <div class="brand">
-      <span class="brand-icon" aria-hidden="true">◐</span>
-      <span class="brand-name">BIT Study Buddy</span>
+    <div class="title-block">
+      <div class="title-block-main">
+        <span class="brand-mark" aria-hidden="true">§</span>
+        <div>
+          <p class="brand-name">BIT Study Buddy</p>
+          <p class="brand-tag">Weekly study planner — simulated assistant</p>
+        </div>
+      </div>
+      <dl class="title-block-meta">
+        <div><dt>Track</dt><dd>Alexa+ · simulated experience</dd></div>
+        <div><dt>Runs</dt><dd>Fully offline, in-browser</dd></div>
+      </dl>
     </div>
-    <p class="brand-tag">A simulated study-planning assistant for university students</p>
   </header>
 
   <main id="main-content" class="app-main">
 
-    <!-- Welcome / disclosure banner -->
+    <!-- Welcome / overview -->
     <section class="welcome-card" id="welcomeCard" aria-labelledby="welcomeHeading">
-      <h1 id="welcomeHeading">Plan your week in one message</h1>
-      <p>
-        Tell me how much study time you have, which subjects you're juggling, and any deadlines.
-        I'll turn that into a weekly study plan you can edit, complete, and track.
-      </p>
+      <div class="welcome-copy">
+        <h1 id="welcomeHeading">Tell it your week. Get a plan back.</h1>
+        <p>
+          Describe your available study time, subjects, and deadlines below — it reads
+          your message, splits the time across your subjects, and lays out a plan you can
+          edit, complete, and track across the week.
+        </p>
+      </div>
+      <dl class="stat-strip" id="statStrip" aria-label="This week at a glance">
+        <div class="stat">
+          <dt>Sessions</dt>
+          <dd id="statSessions">0</dd>
+        </div>
+        <div class="stat">
+          <dt>Study time</dt>
+          <dd id="statMinutes">0h</dd>
+        </div>
+        <div class="stat">
+          <dt>Done</dt>
+          <dd id="statComplete">0</dd>
+        </div>
+      </dl>
       <p class="disclosure">
-        <strong>Note:</strong> This is an independent student project built for a hackathon.
-        It is a <strong>simulated</strong> assistant — all planning happens with simple local
-        rules inside your browser. It is <em>not</em> connected to Alexa+, Amazon, or any
-        Amazon device or service, and no real AI model runs behind it.
+        <strong>What this actually is:</strong> an independent student project for a hackathon.
+        It's a <strong>simulated</strong> assistant — planning runs on plain, readable rules in
+        your browser, not a real AI model. It does not connect to Alexa+, Amazon, or any
+        Amazon device or service.
       </p>
     </section>
 
@@ -51,13 +76,13 @@
         ></textarea>
         <div class="chat-actions">
           <button type="submit" class="btn btn-primary" id="sendBtn">
-            <span aria-hidden="true">➤</span> Build my plan
+            Build my plan <span aria-hidden="true">→</span>
           </button>
         </div>
       </form>
 
       <div class="example-prompts" aria-label="Example prompts you can try">
-        <span class="example-label">Try an example:</span>
+        <span class="example-label">Try an example</span>
         <button type="button" class="chip" data-example="1">6 hrs/week · Math, Web Programming</button>
         <button type="button" class="chip" data-example="2">10 hrs/week · 3 subjects, exam Friday</button>
         <button type="button" class="chip" data-example="3">Light week · 2 hrs · one subject</button>
@@ -67,21 +92,21 @@
     <!-- Weekly plan -->
     <section class="plan-card" aria-labelledby="planHeading">
       <div class="plan-header">
-        <h2 id="planHeading">Your weekly plan</h2>
+        <h2 id="planHeading">Your week</h2>
         <button type="button" class="btn btn-ghost btn-small" id="resetBtn">Reset demo data</button>
       </div>
 
       <div id="planEmptyState" class="empty-state">
         <span class="empty-icon" aria-hidden="true">✎</span>
-        <p>No plan yet. Describe your week above, or tap an example, to generate your first study plan.</p>
+        <p>No plan yet. Describe your week above, or try an example, to lay out your first week.</p>
       </div>
 
-      <ul id="planList" class="plan-list" aria-live="polite"></ul>
+      <div id="planList" class="week-grid" aria-live="polite"></div>
     </section>
 
     <!-- Add task manually -->
     <section class="add-task-card" aria-labelledby="addTaskHeading">
-      <h2 id="addTaskHeading">Add a study session manually</h2>
+      <h2 id="addTaskHeading">Add a session by hand</h2>
       <form id="taskForm" class="task-form">
         <div class="field">
           <label for="taskSubject">Subject</label>
@@ -119,7 +144,7 @@
   </main>
 
   <footer class="app-footer">
-    <p>Built as a free, open-source student project. Runs entirely in your browser — no account, no server, no cost.</p>
+    <p>Free, open-source student project. Runs entirely in your browser — no account, no server, no cost.</p>
   </footer>
 
   <script src="app.js"></script>

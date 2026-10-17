@@ -46,6 +46,9 @@
   const resetBtn = document.getElementById("resetBtn");
   const taskForm = document.getElementById("taskForm");
   const formStatus = document.getElementById("formStatus");
+  const statSessions = document.getElementById("statSessions");
+  const statMinutes = document.getElementById("statMinutes");
+  const statComplete = document.getElementById("statComplete");
 
   const EXAMPLES = {
     1: "I have 6 hours this week. Subjects: Math, Web Programming.",
@@ -72,16 +75,38 @@
     if (labelMatch) {
       subjectsText = labelMatch[1];
     } else {
-      // Remove the hours phrase and common filler, then take what's left as subjects
-      subjectsText = text
+      // Remove the hours phrase and common filler, then keep only the first
+      // clause (subject names are usually named before any sentence break
+      // or before a deadline/priority word like "exam" or "priority") so
+      // trailing fragments like "Math exam is on Friday" don't get parsed
+      // as extra subjects.
+      const cleaned = text
         .replace(/\b(i have|this week|light week|only)\b/gi, "")
-        .replace(/\d+(\.\d+)?\s*(hours|hour|hrs|hr)/gi, "");
+        .replace(/\d+(\.\d+)?\s*(hours|hour|hrs|hr)/gi, "")
+        .trim();
+      subjectsText = cleaned
+        .split(/[.]|\b(?:exam|test|deadline|priority|urgent)\b/i)[0]
+        .replace(/^\s*for\s+/i, "");
     }
 
     let subjects = subjectsText
       .split(/,|\band\b/i)
-      .map((s) => s.replace(/\(.*?\)/g, "").trim())
-      .filter((s) => s.length > 1 && s.length < 40);
+      .map((s) => s.replace(/\(.*?\)/g, "").replace(/^\s*(for|on|is)\s+/i, "").trim())
+      .filter((s) =>
+        s.length > 1 &&
+        s.length < 40 &&
+        !/^(high|medium|low)?\s*priority$/i.test(s) &&
+        !/^(exam|test|deadline|urgent)\b/i.test(s)
+      );
+
+    // de-duplicate (case-insensitive) while keeping the first-seen order
+    const seen = new Set();
+    subjects = subjects.filter((s) => {
+      const key = s.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
 
     if (subjects.length === 0) subjects = ["General study"];
     if (subjects.length > 5) subjects = subjects.slice(0, 5); // keep the plan readable
@@ -174,47 +199,92 @@
     );
   }
 
-  // ---------- Rendering the plan list ----------
+  // ---------- Subject color coding ----------
+  // Each subject gets a stable "highlighter" color, picked deterministically
+  // from its name (a simple string hash) so the same subject always lands
+  // on the same swatch without needing a color picker.
+  const SWATCH_COUNT = 4;
+  function swatchClassForSubject(subject) {
+    let hash = 0;
+    for (let i = 0; i < subject.length; i++) {
+      hash = (hash * 31 + subject.charCodeAt(i)) >>> 0;
+    }
+    return "swatch-" + (hash % SWATCH_COUNT);
+  }
+
+  // ---------- Rendering: a day-by-day weekly grid ----------
   function renderPlan() {
     planList.innerHTML = "";
 
     if (tasks.length === 0) {
       planEmptyState.style.display = "block";
+      updateStats();
       return;
     }
     planEmptyState.style.display = "none";
 
-    const sorted = tasks.slice().sort((a, b) => DAYS.indexOf(a.day) - DAYS.indexOf(b.day));
+    DAYS.forEach((day) => {
+      const lane = document.createElement("div");
+      lane.className = "day-lane";
+      lane.dataset.day = day;
 
-    sorted.forEach((task) => {
-      const li = document.createElement("li");
-      li.className = "plan-item" + (task.complete ? " is-complete" : "");
-      li.dataset.id = task.id;
+      const header = document.createElement("div");
+      header.className = "day-lane-header";
+      header.textContent = DAY_LABELS[day] || day;
+      lane.appendChild(header);
 
-      li.innerHTML = `
-        <span class="plan-item-day">${DAY_LABELS[task.day] || task.day}</span>
-        <span class="plan-item-body">
-          <span class="plan-item-subject"></span>
-          <span class="plan-item-meta">
-            <span>${task.duration} min</span>
-            <span class="priority-dot priority-${task.priority}">${capitalize(task.priority)}</span>
-          </span>
-        </span>
-        <span class="plan-item-actions">
-          <button type="button" class="icon-btn btn-complete" aria-pressed="${task.complete}" title="Mark complete" aria-label="Mark ${task.subject} complete">✓</button>
-          <button type="button" class="icon-btn btn-edit" title="Edit" aria-label="Edit ${task.subject}">✎</button>
-          <button type="button" class="icon-btn btn-delete" title="Delete" aria-label="Delete ${task.subject}">✕</button>
-        </span>
-      `;
-      // set subject via textContent to avoid any HTML-injection from free text
-      li.querySelector(".plan-item-subject").textContent = task.subject;
+      const dayTasks = tasks.filter((t) => t.day === day);
 
-      li.querySelector(".btn-complete").addEventListener("click", () => toggleComplete(task.id));
-      li.querySelector(".btn-delete").addEventListener("click", () => deleteTask(task.id));
-      li.querySelector(".btn-edit").addEventListener("click", () => editTask(task.id));
+      if (dayTasks.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "day-lane-empty";
+        empty.textContent = "—";
+        lane.appendChild(empty);
+      } else {
+        dayTasks.forEach((task) => {
+          lane.appendChild(buildPlanItem(task));
+        });
+      }
 
-      planList.appendChild(li);
+      planList.appendChild(lane);
     });
+
+    updateStats();
+  }
+
+  function buildPlanItem(task) {
+    const card = document.createElement("div");
+    card.className = "plan-item " + swatchClassForSubject(task.subject) + (task.complete ? " is-complete" : "");
+    card.dataset.id = task.id;
+
+    card.innerHTML = `
+      <span class="plan-item-subject"></span>
+      <span class="plan-item-meta">
+        <span>${task.duration} min</span>
+        <span class="priority-dot priority-${task.priority}">${capitalize(task.priority)}</span>
+      </span>
+      <span class="plan-item-actions">
+        <button type="button" class="icon-btn btn-complete" aria-pressed="${task.complete}" title="Mark complete" aria-label="Mark ${task.subject} complete">✓</button>
+        <button type="button" class="icon-btn btn-edit" title="Edit" aria-label="Edit ${task.subject}">✎</button>
+        <button type="button" class="icon-btn btn-delete" title="Delete" aria-label="Delete ${task.subject}">✕</button>
+      </span>
+    `;
+    // set subject via textContent to avoid any HTML-injection from free text
+    card.querySelector(".plan-item-subject").textContent = task.subject;
+
+    card.querySelector(".btn-complete").addEventListener("click", () => toggleComplete(task.id));
+    card.querySelector(".btn-delete").addEventListener("click", () => deleteTask(task.id));
+    card.querySelector(".btn-edit").addEventListener("click", () => editTask(task.id));
+
+    return card;
+  }
+
+  function updateStats() {
+    const totalMinutes = tasks.reduce((sum, t) => sum + t.duration, 0);
+    const completeCount = tasks.filter((t) => t.complete).length;
+    statSessions.textContent = String(tasks.length);
+    statMinutes.textContent = (totalMinutes / 60).toFixed(1).replace(/\.0$/, "") + "h";
+    statComplete.textContent = `${completeCount}/${tasks.length}`;
   }
 
   function capitalize(s) {
