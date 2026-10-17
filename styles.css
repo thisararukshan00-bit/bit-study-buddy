@@ -1,44 +1,13 @@
-/* BIT Study Buddy — "planner sheet" theme.
-   A weekly study plan should look like a ruled planner page, not a SaaS
-   dashboard: graph-paper background, ink-navy structure, highlighter-style
-   subject colors, crisp hard-edged "index card" shadows instead of soft
-   blur. System fonts only — no remote fonts or images. */
+/* BIT Study Buddy — "study-lab" dark theme (default), with an optional
+   light "planner sheet" theme behind the header toggle. Neither ever
+   follows the visitor's OS/browser dark-mode setting — a hackathon demo
+   should look the same on every screen it's recorded on, chosen by hand,
+   not by the presenter's system theme. A restrained cyan-glow accent
+   stands in for "lab monitor" light; glow is used sparingly (buttons,
+   active borders), not smeared across the whole page. System fonts
+   only — no remote fonts or images. */
 
 :root {
-  color-scheme: light;
-  --paper: #eef1f4;
-  --paper-line: #d3dbe4;
-  --sheet: #ffffff;
-  --ink: #18223d;
-  --ink-soft: #55617d;
-  --ink-faint: #8792a8;
-  --rule: #c7d1de;
-  --teal: #246b63;
-  --teal-dark: #184e48;
-  --teal-wash: #e3f0ee;
-  --rust: #b5542e;
-  --rust-wash: #f7e7e0;
-  --ochre: #a9791c;
-  --ochre-wash: #f6edd8;
-  --forest: #3c6e4f;
-  --forest-wash: #e6f0e8;
-  --danger: #b5542e;
-  --focus: #1a73e8;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --hard-shadow: 3px 3px 0 rgba(24, 34, 61, 0.14);
-  --hard-shadow-sm: 2px 2px 0 rgba(24, 34, 61, 0.12);
-  --font-display: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
-  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-data: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
-}
-
-/* A second, optional "study-lab" dark theme — picked by hand with the
-   toggle button, never by the visitor's OS setting, so a demo recording
-   never shifts on its own. A restrained cyan-glow accent stands in for
-   "lab monitor" light; glow is used sparingly (buttons, active borders),
-   not smeared across the whole page. */
-:root[data-theme="dark"] {
   color-scheme: dark;
   --paper: #0b0f1a;
   --paper-line: #141b2c;
@@ -57,18 +26,50 @@
   --forest: #6be3a0;
   --forest-wash: #10281c;
   --danger: #ff9d5c;
+  --focus: #1a73e8;
+  --radius-sm: 4px;
+  --radius-md: 6px;
   --hard-shadow: 3px 3px 0 rgba(0, 0, 0, 0.6), 0 0 14px rgba(53, 214, 196, 0.06);
   --hard-shadow-sm: 2px 2px 0 rgba(0, 0, 0, 0.55);
   --glow: 0 0 0 1px rgba(53, 214, 196, 0.3), 0 0 10px rgba(53, 214, 196, 0.25);
+  --font-display: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-data: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
 }
-:root[data-theme="dark"] .btn-primary,
-:root[data-theme="dark"] .btn-secondary { box-shadow: var(--hard-shadow-sm), var(--glow); }
-:root[data-theme="dark"] .msg-user { box-shadow: var(--glow); }
-:root[data-theme="dark"] .plan-item { box-shadow: var(--hard-shadow-sm), 0 0 8px rgba(0,0,0,0.3); }
+.btn-primary, .btn-secondary { box-shadow: var(--hard-shadow-sm), var(--glow); }
+.msg-user { box-shadow: var(--glow); }
+.plan-item { box-shadow: var(--hard-shadow-sm), 0 0 8px rgba(0, 0, 0, 0.3); }
 
-/* Otherwise this page uses the light "planner sheet" theme below, and
-   never follows the visitor's OS/browser dark-mode setting on its own —
-   a hackathon demo should look the same on every screen it's recorded on. */
+/* Optional light "planner sheet" theme — graph-paper background,
+   ink-navy structure, highlighter-style subject colors, crisp hard-edged
+   "index card" shadows instead of glow. Picked by hand via the toggle. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --paper: #eef1f4;
+  --paper-line: #d3dbe4;
+  --sheet: #ffffff;
+  --ink: #18223d;
+  --ink-soft: #55617d;
+  --ink-faint: #8792a8;
+  --rule: #c7d1de;
+  --teal: #246b63;
+  --teal-dark: #184e48;
+  --teal-wash: #e3f0ee;
+  --rust: #b5542e;
+  --rust-wash: #f7e7e0;
+  --ochre: #a9791c;
+  --ochre-wash: #f6edd8;
+  --forest: #3c6e4f;
+  --forest-wash: #e6f0e8;
+  --danger: #b5542e;
+  --hard-shadow: 3px 3px 0 rgba(24, 34, 61, 0.14);
+  --hard-shadow-sm: 2px 2px 0 rgba(24, 34, 61, 0.12);
+  --glow: none;
+}
+:root[data-theme="light"] .btn-primary,
+:root[data-theme="light"] .btn-secondary { box-shadow: var(--hard-shadow-sm); }
+:root[data-theme="light"] .msg-user { box-shadow: none; }
+:root[data-theme="light"] .plan-item { box-shadow: var(--hard-shadow-sm); }
 
 * { box-sizing: border-box; }
 
